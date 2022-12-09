@@ -30,6 +30,8 @@ namespace CinemaAPI.Repository {
 
             movieOld.Name = movie.Name;
             movieOld.Language = movie.Language;
+            movieOld.Rate = movie.Rate;
+            movieOld.ImageUrl = movie.ImageUrl;
             //_cinemaDbContext.Movies.Update(movieOld);
             _cinemaDbContext.SaveChanges();
 

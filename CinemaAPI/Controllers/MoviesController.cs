@@ -32,17 +32,60 @@ namespace CinemaAPI.Controllers {
             return movie != null ? Ok(movie): NotFound("Movie with id " + id + " does not exist") ;
         }
 
-        [HttpPost] 
-        public IActionResult Add([FromBody]AddMovieDto addMovieDto) {
+        //[HttpPost] 
+        //public IActionResult Add([FromBody]AddMovieDto addMovieDto) {
+        //var movie = _moviesService.AddMovie(addMovieDto);
+        //    return Created("", movie);
+        //}
+
+        [HttpPost]
+        public IActionResult Post([FromForm] AddMovieDto addMovieDto) {
+            var guid = Guid.NewGuid();
+            var filePath = Path.Combine("wwwroot", guid+".jpg");
+
+            if (addMovieDto.File != null) {
+                var fileStream = new FileStream(filePath, FileMode.Create);
+                addMovieDto.File.CopyTo(fileStream);
+            }
+
+            addMovieDto.ImageUrl = filePath.Remove(0,7);
             var movie = _moviesService.AddMovie(addMovieDto);
             return Created("", movie);
+
+ 
         }
 
+        //[HttpPut]
+        //[Route("{id}")]
+        //public IActionResult Put([FromRoute] int id, [FromBody] AddMovieDto movie) {
+        //    var updatedMovie = _moviesService.UpdateMovie(id, movie);
+        //    return updatedMovie != null ? Ok(updatedMovie) : NotFound("Movie with id " + id + " does not exist");
+        //}
         [HttpPut]
         [Route("{id}")]
-        public IActionResult Put([FromRoute] int id, [FromBody] AddMovieDto movie) {
-            var updatedMovie = _moviesService.UpdateMovie(id, movie);
-            return updatedMovie != null ? Ok(updatedMovie) : NotFound("Movie with id " + id + " does not exist");
+        public IActionResult Put([FromRoute] int id, [FromForm] AddMovieDto movie) {
+
+            var findMovie = _moviesService.GetMovieById(id);
+            if (findMovie == null) {
+                return NotFound("Movie with id " + id + " does not exist");
+
+            }
+
+            var guid = Guid.NewGuid();
+            var filePath = Path.Combine("wwwroot", guid + ".jpg");
+
+            if (movie.File != null) {
+                var fileStream = new FileStream(filePath, FileMode.Create);
+                movie.File.CopyTo(fileStream);
+                movie.ImageUrl = filePath.Remove(0, 7);
+
+            }
+
+            var movieUpdated = _moviesService.UpdateMovie(id, movie);
+            return Created("", movieUpdated);
+
+
+            //return updatedMovie != null ? Ok(updatedMovie) : NotFound("Movie with id " + id + " does not exist");
         }
 
         [HttpDelete]
