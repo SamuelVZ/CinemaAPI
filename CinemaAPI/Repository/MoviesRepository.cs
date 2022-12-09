@@ -29,8 +29,15 @@ namespace CinemaAPI.Repository {
             var movieOld = GetMovieById(id);
 
             movieOld.Name = movie.Name;
+            movieOld.Description = movie.Description;
             movieOld.Language = movie.Language;
-            movieOld.Rate = movie.Rate;
+            movieOld.Duration = movie.Duration;
+            movieOld.PlayingDate = movie.PlayingDate;
+            movieOld.PlayingTime = movie.PlayingTime;
+            movieOld.TicketPrice = movie.TicketPrice;
+            movieOld.Rating = movie.Rating;
+            movieOld.Genre = movie.Genre;
+            movieOld.TrailerUrl = movie.TrailerUrl;
             movieOld.ImageUrl = movie.ImageUrl;
             //_cinemaDbContext.Movies.Update(movieOld);
             _cinemaDbContext.SaveChanges();
