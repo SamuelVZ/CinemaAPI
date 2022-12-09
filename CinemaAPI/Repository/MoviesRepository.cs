@@ -1,4 +1,5 @@
 ﻿using CinemaAPI.Data;
+using CinemaAPI.Dto;
 using CinemaAPI.Models;
 
 namespace CinemaAPI.Repository {
@@ -24,8 +25,26 @@ namespace CinemaAPI.Repository {
             return movie;
         }
 
-        //public Movie UpdateMovie(int id, Movie movie) {
-        //    throw new NotImplementedException();
-        //}
+        public Movie UpdateMovie(int id, AddMovieDto movie) {
+            var movieOld = GetMovieById(id);
+
+            movieOld.Name = movie.Name;
+            movieOld.Language = movie.Language;
+            //_cinemaDbContext.Movies.Update(movieOld);
+            _cinemaDbContext.SaveChanges();
+
+            return movieOld;
+        }
+
+        public bool DeleteMovie(Movie movie) {
+
+            if (movie == null) {
+                return false;
+            }
+
+            _cinemaDbContext.Remove(movie);
+            _cinemaDbContext.SaveChanges();
+            return true;
+        }
     }
 }

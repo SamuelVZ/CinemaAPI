@@ -7,5 +7,7 @@ namespace CinemaAPI.Service {
         public List<Movie> GetAllMovies();
         public Movie GetMovieById(int id);
         public MovieDto AddMovie(AddMovieDto addMoviedto);
+        public Movie UpdateMovie(int id, AddMovieDto updateMovieDto);
+        public Boolean DeleteMovie(int id);
     }
 }
