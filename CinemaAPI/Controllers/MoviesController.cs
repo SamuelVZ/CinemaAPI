@@ -31,6 +31,11 @@ namespace CinemaAPI.Controllers {
 
             return movie != null ? Ok(movie): NotFound("Movie with id " + id + " does not exist") ;
         }
+        [HttpGet] //to access this method "api/movies/test/2"
+        [Route("[action]/{id}")]
+        public int Test(int id) {
+            return id;
+        }
 
         //[HttpPost] 
         //public IActionResult Add([FromBody]AddMovieDto addMovieDto) {
