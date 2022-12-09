@@ -38,10 +38,12 @@ if (app.Environment.IsDevelopment()) {
     app.UseSwaggerUI();
 }
 
-using (var scope = app.Services.CreateScope()) {
-    var dbContext = scope.ServiceProvider.GetRequiredService<CinemaDbContext>();
-    dbContext.Database.EnsureCreated();
-}
+//using (var scope = app.Services.CreateScope()) {
+//    var dbContext = scope.ServiceProvider.GetRequiredService<CinemaDbContext>();
+//    dbContext.Database.EnsureCreated();
+//}
+
+app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 
@@ -52,10 +54,10 @@ app.MapControllers();
 app.Run();
 
 
-//public class MysqlEntityFrameworkDesignTimeServices : IDesignTimeServices {
-//    public void ConfigureDesignTimeServices(IServiceCollection serviceCollection) {
-//        serviceCollection.AddEntityFrameworkMySQL();
-//        new EntityFrameworkRelationalDesignServicesBuilder(serviceCollection)
-//            .TryAddCoreServices();
-//    }
-//}
+public class MysqlEntityFrameworkDesignTimeServices : IDesignTimeServices {
+    public void ConfigureDesignTimeServices(IServiceCollection serviceCollection) {
+        serviceCollection.AddEntityFrameworkMySQL();
+        new EntityFrameworkRelationalDesignServicesBuilder(serviceCollection)
+            .TryAddCoreServices();
+    }
+}
