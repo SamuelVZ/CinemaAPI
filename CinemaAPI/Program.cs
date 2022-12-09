@@ -27,6 +27,9 @@ builder.Services.AddScoped<IMoviesService, MoviesService>();
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
+//responses can be delivered in xml format if specified on the header (json still default)
+builder.Services.AddMvc().AddXmlSerializerFormatters();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
