@@ -24,6 +24,8 @@ builder.Services.AddDbContext<CinemaDbContext>(options => {
 //Add scope for interfaces (when you call the interface then the class is implemented instead)
 builder.Services.AddScoped<IMoviesRepository, MoviesRepository>();
 builder.Services.AddScoped<IMoviesService, MoviesService>();
+builder.Services.AddScoped<IUserRepo, UserRepo>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
