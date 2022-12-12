@@ -14,8 +14,11 @@ namespace CinemaAPI.Service {
             this._mapper = mapper;
         }
 
-        public List<Movie> GetAllMovies() {
-            return _moviesRepository.GetAllMovies();
+        public List<DisplayMoviesDto> GetAllMovies() {
+            var movies = _moviesRepository.GetAllMovies();
+            var displayMovies = _mapper.Map<List<Movie>, List<DisplayMoviesDto>>(movies);
+
+            return displayMovies;
         }
 
         public Movie GetMovieById(int id) {
@@ -48,6 +51,13 @@ namespace CinemaAPI.Service {
             _moviesRepository.DeleteMovie(movie);
             return true;
 
+        }
+
+        public IQueryable FindMovies(string name) {
+            var movies = _moviesRepository.FindMovies(name);
+            //var moviesFound = _mapper.Map<IQueryable, List<FindMovies>>(movies);
+            //var moviesFound = movies.Cast<FindMovies>();
+            return movies;
         }
     }
 }

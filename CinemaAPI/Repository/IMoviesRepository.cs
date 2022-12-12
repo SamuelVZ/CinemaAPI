@@ -9,5 +9,6 @@ namespace CinemaAPI.Repository {
         public Movie AddMovie(Movie movie);
         public Movie UpdateMovie(int id, AddMovieDto movie);
         public Boolean DeleteMovie(Movie movie);
+        public IQueryable FindMovies(string movieName);
     }
 }

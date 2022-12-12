@@ -55,5 +55,17 @@ namespace CinemaAPI.Repository {
             _cinemaDbContext.SaveChanges();
             return true;
         }
+
+        public IQueryable FindMovies(string movieName) {
+            var movies = from movie in _cinemaDbContext.Movies
+                         where movie.Name.StartsWith(movieName.ToLower()) || movie.Name.StartsWith(movieName.ToUpper())
+                         select new {
+                             Id = movie.Id,
+                             Name = movie.Name,
+                             ImageUrl = movie.ImageUrl,
+                         };
+
+            return movies;
+        }
     }
 }
