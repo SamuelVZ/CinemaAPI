@@ -1,6 +1,6 @@
 ﻿using CinemaAPI.Dto;
-using CinemaAPI.Models;
 using CinemaAPI.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CinemaAPI.Controllers {
@@ -14,28 +14,40 @@ namespace CinemaAPI.Controllers {
             this._moviesService = moviesService;
         }
 
-        //List<Movie> movies = new List<Movie> {
-        //    new Movie(){ Id = 0, Name = "Interestellar", Language = "English"},
-        //    new Movie(){ Id = 1, Name = "MadMax", Language = "English"},
-        //};
-
         [HttpGet]
-        public IActionResult GetAll() {
-            return Ok(_moviesService.GetAllMovies());
+        [Authorize]
+        public IActionResult GetAll(string? sort, int? pageNumber, int? pageSize) {
+
+            var currentPageNumber = pageNumber ?? 1; // if variable is null, then the value is assigned with the ?? operator
+            var currentPageSize = pageSize ?? 2;
+
+
+            var movies = _moviesService.GetAllMovies();
+            
+            switch (sort) {
+                case "desc":
+                    return Ok(movies.OrderByDescending(m => m.Rating));
+                case "asc":
+                    return Ok(movies.OrderBy(m => m.Rating));
+                default:
+                    return Ok(movies.Skip((currentPageNumber - 1) * currentPageSize).Take(currentPageSize));
+            }
         }
 
         [HttpGet]
+        [Authorize]
         [Route("{id}")]
         public IActionResult GetMovieById([FromRoute]int id) {
             var movie = _moviesService.GetMovieById(id);
 
             return movie != null ? Ok(movie): NotFound("Movie with id " + id + " does not exist") ;
         }
-        [HttpGet] //to access this method "api/movies/test/2"
-        [Route("[action]/{id}")]
-        public int Test(int id) {
-            return id;
-        }
+
+        //[HttpGet] //to access this method "api/movies/test/2"
+        //[Route("[action]/{id}")]
+        //public int Test(int id) {
+        //    return id;
+        //}
 
         //[HttpPost] 
         //public IActionResult Add([FromBody]AddMovieDto addMovieDto) {
@@ -44,6 +56,7 @@ namespace CinemaAPI.Controllers {
         //}
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Post([FromForm] AddMovieDto addMovieDto) {
             var guid = Guid.NewGuid();
             var filePath = Path.Combine("wwwroot", guid+".jpg");
@@ -67,6 +80,7 @@ namespace CinemaAPI.Controllers {
         //    return updatedMovie != null ? Ok(updatedMovie) : NotFound("Movie with id " + id + " does not exist");
         //}
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         [Route("{id}")]
         public IActionResult Put([FromRoute] int id, [FromForm] AddMovieDto movie) {
 
@@ -94,11 +108,21 @@ namespace CinemaAPI.Controllers {
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Admin")]
         [Route("{id}")]
         public IActionResult Delete([FromRoute] int id) {
             var deleted = _moviesService.DeleteMovie(id);
 
             return deleted ? Ok("Movie deleted") : NotFound("The movie tried to delete does not exist");
+        }
+
+
+        [HttpGet]
+        //[Authorize]
+        [Route("[action]")]
+        public IActionResult FindMovies(string name) {
+            return Ok( _moviesService.FindMovies(name));
+
         }
     }
 }
