@@ -18,15 +18,11 @@ namespace CinemaAPI.Repository {
 
 
 
-        public bool CheckIfEmailExist(string email) {
+        public User CheckIfUserExistByEmail(string email) {
 
-            var userWithSameEmail = _cinemaDbContext.Users.Where( u => u.Email == email ).SingleOrDefault();
+            var user = _cinemaDbContext.Users.Where( u => u.Email == email ).SingleOrDefault();
 
-            if (userWithSameEmail != null) {
-                return true;
-            }
-
-            return false;
+            return user;
         }
     }
 }
