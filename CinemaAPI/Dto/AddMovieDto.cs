@@ -17,12 +17,12 @@ namespace CinemaAPI.Dto {
         public double Rating { get; set; }
         public string Genre { get; set; }
         public string TrailerUrl { get; set; }
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
 
 
         [NotMapped] //not maped does not in clude the field in to the DB
         public IFormFile File { get; set; }
 
-        public ICollection<Reservation> Reservations { get; set; }
+        public ICollection<Reservation>? Reservations { get; set; }
     }
 }
