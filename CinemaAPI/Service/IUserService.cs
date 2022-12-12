@@ -7,5 +7,7 @@ namespace CinemaAPI.Service {
         public UserDto RegisterUser(AddUserDto addUserDto);
         public Boolean CheckIfEmailExist(string email);
 
+        public User FindUserByEmail(string email);
+
     }
 }

@@ -29,8 +29,17 @@ namespace CinemaAPI.Service {
 
 
         public bool CheckIfEmailExist(string email) {
-            return _userRepo.CheckIfEmailExist(email);
+            var exist =  _userRepo.CheckIfUserExistByEmail(email);
+
+            if(exist == null) {
+                return false;
+            }
+
+            return true;
         }
 
+        public User FindUserByEmail(string email) {
+            return _userRepo.CheckIfUserExistByEmail(email);
+        }
     }
 }
