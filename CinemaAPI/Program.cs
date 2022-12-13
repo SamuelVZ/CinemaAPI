@@ -29,6 +29,10 @@ builder.Services.AddScoped<IMoviesRepository, MoviesRepository>();
 builder.Services.AddScoped<IMoviesService, MoviesService>();
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IReservationsRepo, ReservationsRepo>();
+builder.Services.AddScoped<IReservationsService, ReservationsService>();
+
+
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
